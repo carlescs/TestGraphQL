@@ -1,4 +1,4 @@
-using TestGrapohQL.Query;
+using TestGraphQL.Query;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
-﻿using TestGrapohQL.Model;
+﻿using TestGraphQL.Model;
 
-namespace TestGrapohQL.Query
+namespace TestGraphQL.Query
 {
     public class Query
     {

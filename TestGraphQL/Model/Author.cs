@@ -1,4 +1,4 @@
-﻿namespace TestGrapohQL.Model
+﻿namespace TestGraphQL.Model
 {
     public class Author
     {
