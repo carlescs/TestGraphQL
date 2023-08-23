@@ -1,4 +1,6 @@
-﻿using TestGraphQL.Model;
+﻿using HotChocolate.Subscriptions;
+using TestGraphQL.Data;
+using TestGraphQL.Model;
 
 namespace TestGraphQL.Query
 {
@@ -12,5 +14,11 @@ namespace TestGraphQL.Query
                 Name = "Jon Skeet"
             }
         };
+
+        public List<Book> GetBooks([Service] IBookRepository bookRepository)
+        {
+            var books=bookRepository.GetBooks();
+            return books;
+        }
     }
 }

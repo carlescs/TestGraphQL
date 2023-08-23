@@ -1,3 +1,4 @@
+using TestGraphQL.Data;
 using TestGraphQL.Query;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<IBookRepository,BookRepository>(); 
 builder.Services.AddGraphQLServer()
     .AddQueryType<Query>();
 
