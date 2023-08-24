@@ -1,5 +1,6 @@
 using TestGraphQL.Data;
-using TestGraphQL.Query;
+using TestGraphQL.Mutations;
+using TestGraphQL.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IBookRepository,BookRepository>(); 
 builder.Services.AddGraphQLServer()
-    .AddQueryType<Query>();
+    .AddQueryType<BookQueries>()
+    .AddMutationType<BookMutations>();
 
 var app = builder.Build();
 
