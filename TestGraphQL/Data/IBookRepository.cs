@@ -1,11 +1,12 @@
-﻿using TestGraphQL.Model;
+﻿using TestGraphQL.Database;
 
 namespace TestGraphQL.Data
 {
     public interface IBookRepository
     {
-        void AddBook(Book book);
-        Book? GetBookByTitle(string title);
+        Task<Author?> AddauthorIfNotExists(Model.Author author);
+        Task AddBookAsync(Book book);
+        Task<Book?> GetBookByTitleAsync(string title);
         List<Book> GetBooks();
     }
 }

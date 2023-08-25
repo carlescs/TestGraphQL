@@ -1,39 +1,44 @@
-﻿using TestGraphQL.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using TestGraphQL.Database;
 
 namespace TestGraphQL.Data
 {
     public class BookRepository : IBookRepository
     {
-        private List<Book> _books = new List<Book>
-            {
-                //new Book { Author = new Author { Name = "Jon Skeet" }, Title = "C# in Depth" },
-                //new Book { Author = new Author { Name = "Simon Robinson" }, Title = "Professional C# 7 and .NET Core 2.0" },
-                //new Book { Author = new Author { Name = "Andrew Troelsen" }, Title = "Pro C# 7" },
-                //new Book { Title = "Harry Potter and the Philosopher's Stone", Author = new Author { Name = "J. K. Rowling" } },
-                //new Book { Title = "Harry Potter and the Chamber of Secrets", Author = new Author { Name = "J. K. Rowling" } },
-                //new Book { Title = "Harry Potter and the Prisoner of Azkaban", Author = new Author { Name = "J. K. Rowling" } },
-                //new Book { Title = "Harry Potter and the Goblet of Fire", Author = new Author { Name = "J. K. Rowling" } },
-                //new Book { Title = "Harry Potter and the Order of the Phoenix", Author = new Author { Name = "J. K. Rowling" } },
-                //new Book { Title = "Harry Potter and the Half-Blood Prince", Author = new Author { Name = "J. K. Rowling" } },
-                //new Book { Title = "Harry Potter and the Deathly Hallows", Author = new Author { Name = "J. K. Rowling" } },
-                //new Book { Title = "The Hobbit", Author = new Author { Name = "J. R. R. Tolkien" } },
-                //new Book { Title = "The Fellowship of the Ring", Author = new Author { Name = "J. R. R. Tolkien" } },
-            };
+        private readonly ApplicationDbContext _dbContext;
 
-        public void AddBook(Book book)
+        public BookRepository(ApplicationDbContext dbContext)
         {
-            if (!_books.Any(t => t.Title == book.Title))
-                _books.Add(book);
+            _dbContext = dbContext;
+        }
+
+        public async Task AddBookAsync(Book book)
+        {
+            _dbContext.Add(book);
+            await _dbContext.SaveChangesAsync();
         }
 
         public List<Book> GetBooks()
         {
-            return _books;
+            return _dbContext.Books.Include(b => b.Author).ToList();
         }
 
-        Book? IBookRepository.GetBookByTitle(string title)
+        public async Task<Book?> GetBookByTitleAsync(string title)
         {
-            return _books.Find(b => string.Equals(b.Title, title, StringComparison.InvariantCultureIgnoreCase));
+            return await _dbContext.Books.FirstOrDefaultAsync(b => b.Title==title);
+        }
+
+        public async Task<Author?> AddauthorIfNotExists(Model.Author author)
+        {
+            if (author == null) return null;
+            var dbAuthor=await _dbContext.Authors.FirstOrDefaultAsync(t=>t.Name==author.Name);
+            if (dbAuthor == null)
+            {
+                dbAuthor=new Author { Name=author.Name};
+                _dbContext.Add(dbAuthor);
+                _dbContext.SaveChanges();
+            }
+            return dbAuthor;
         }
     }
 }

@@ -6,9 +6,11 @@ namespace TestGraphQL.Mutations
     [ExtendObjectType(typeof(Mutation))]
     public class BookMutations
     {
-        public Book AddBook(Book book, [Service] IBookRepository bookRepository)
+        public async Task<Book> AddBookAsync(Book book, [Service] IBookRepository bookRepository)
         {
-            bookRepository.AddBook(book);
+            var dbAuthor =await bookRepository.AddauthorIfNotExists(book.Author);
+            if(dbAuthor == null) throw new Exception("Author is null");
+            await bookRepository.AddBookAsync(new Database.Book { Title=book.Title, Author=dbAuthor});
             return book;
         }
     }
