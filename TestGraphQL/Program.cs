@@ -9,8 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IBookRepository,BookRepository>(); 
 builder.Services.AddGraphQLServer()
-    .AddQueryType<BookQueries>()
-    .AddMutationType<BookMutations>();
+    .AddQueryType<Query>()
+    .AddTypeExtension<BookQueries>()
+    .AddMutationType<Mutation>()
+    .AddTypeExtension<BookMutations>();
 
 var app = builder.Build();
 

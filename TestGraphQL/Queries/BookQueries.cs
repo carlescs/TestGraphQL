@@ -3,6 +3,7 @@ using TestGraphQL.Model;
 
 namespace TestGraphQL.Queries
 {
+    [ExtendObjectType(typeof(Query))]
     public class BookQueries
     {
         public Book? GetBook(string title, [Service] IBookRepository bookRepository)
