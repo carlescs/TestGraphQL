@@ -3,16 +3,18 @@ using TestGraphQL.Model;
 
 namespace TestGraphQL.Queries
 {
-    [ExtendObjectType(typeof(Query))]
+    [ExtendObjectType<Query>]
     public class BookQueries
     {
         public async Task<Book?> GetBookAsync(string title, [Service] IBookRepository bookRepository)
         {
             Database.Book? book = await bookRepository.GetBookByTitleAsync(title);
+            if(book==null)
+                return null;
             return new Book
             {
-                Title= book?.Title,
-                Author= new Author { Name=book?.Author.Name}
+                Title= book!.Title,
+                Author= new Author { Name=book!.Author.Name}
             };
         }
 

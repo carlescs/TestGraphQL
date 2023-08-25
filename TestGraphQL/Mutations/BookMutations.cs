@@ -3,7 +3,7 @@ using TestGraphQL.Model;
 
 namespace TestGraphQL.Mutations
 {
-    [ExtendObjectType(typeof(Mutation))]
+    [ExtendObjectType<Mutation>]
     public class BookMutations
     {
         public async Task<Book> AddBookAsync(Book book, [Service] IBookRepository bookRepository)

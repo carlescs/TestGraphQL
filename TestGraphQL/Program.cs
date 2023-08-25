@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using System;
 using TestGraphQL.Data;
 using TestGraphQL.Database;
 using TestGraphQL.Mutations;
@@ -14,10 +13,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlite("Data Source=books.db");
 });
-builder.Services.AddScoped<IBookRepository,BookRepository>(); 
+builder.Services.AddScoped<IBookRepository,BookRepository>()
+    .AddScoped<IAuthorRepository,AuthorRepository>();
 builder.Services.AddGraphQLServer()
+    .RegisterDbContext<ApplicationDbContext>()
     .AddQueryType<Query>()
     .AddTypeExtension<BookQueries>()
+    .AddTypeExtension<AuthorQueries>()
     .AddMutationType<Mutation>()
     .AddTypeExtension<BookMutations>();
 
