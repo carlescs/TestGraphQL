@@ -10,9 +10,11 @@ namespace TestGraphQL.Queries
             var authors = authorRepository.GetAuthors();
             return authors.Select(t => new Model.Author
             {
+                Id = t.Id,
                 Name = t.Name,
                 Books=t.Books.Select(b=>new Model.Book
                 {
+                    Id=b.Id,
                     Title=b.Title
                 }).ToList()
             }).ToList();
