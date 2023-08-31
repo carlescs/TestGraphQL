@@ -14,8 +14,7 @@ namespace TestGraphQL.Queries
             return new Book
             {
                 Id = book!.Id,
-                Title= book!.Title,
-                Author= new Author { Name=book!.Author.Name}
+                Title= book!.Title
             };
         }
 
@@ -25,12 +24,7 @@ namespace TestGraphQL.Queries
             return books.Select(t=>new Book
             {
                 Id = t.Id,
-                Title = t.Title,
-                Author = new Author
-                {
-                    Id = t.Author.Id,
-                    Name = t.Author.Name
-                }
+                Title = t.Title
             }).ToList();
         }
     }

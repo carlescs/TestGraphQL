@@ -4,9 +4,10 @@ namespace TestGraphQL.Data
 {
     public interface IBookRepository
     {
-        Task<Author?> AddauthorIfNotExists(Model.Author author);
-        Task AddBookAsync(Book book);
+        Task<Author?> AddauthorIfNotExists(Model.AuthorToAdd author);
+        Task<Book> AddBookAsync(Book book);
         Task<Book?> GetBookByTitleAsync(string title);
-        List<Book> GetBooks();
+        IEnumerable<Book> GetBooks();
+        IEnumerable<Book> GetBooksByAuthorId(int id);
     }
 }
